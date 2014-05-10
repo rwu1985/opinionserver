@@ -1,0 +1,40 @@
+<html>
+<head>
+  <title> Voting Client </title>
+  <script src="../node_modules/socket.io/lib/socket.io.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+</head>
+<body onload="connect()">
+
+  <script>
+    var socket;
+    function connect() {
+      socket = io.connect(null);  
+      socket.on('connect', function() {
+        $('#status').html('Connected to Server');
+      });
+      socket.on('disconnect', function() {
+        $('#status').html('Disconnected from Server');
+      });
+      socket.on('reconnecting', function( nextRetry ) {
+        $('#status').html('Reconnecting in ' + nextRetry/1000 + ' milliseconds');
+      });
+      socket.on('reconnect_failed', function() {
+        $('#status').html('Reconnect failed');
+      });
+    }
+
+    function vote(v) {
+      socket.emit('vote', v);
+    }
+  </script>
+
+  <h1> Voting Client </h1>
+  <div><p id="status">Waiting for input</p></div>
+  <button id="vote" class="myButton" onClick="vote(1)"/>Vote 1</button><br>
+  <button id="vote" class="myButton" onClick="vote(2)"/>Vote 2</button><br>
+  <button id="vote" class="myButton" onClick="vote(3)"/>Vote 3</button><br>
+  <button id="vote" class="myButton" onClick="vote(4)"/>Vote 4</button><br>
+  <button id="vote" class="myButton" onClick="vote(5)"/>Vote 5</button>
+</body>
+</html>
